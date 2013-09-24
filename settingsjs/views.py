@@ -2,6 +2,8 @@ from django.conf import settings
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
+import json
+
 from . import signals
 
 
@@ -19,4 +21,5 @@ def settings_js(request, extra_context=None):
     signals.collect_settings.send(sender=settings_js,
                             jssettings=context['settings'], request=request)
 
+    context['jsonsettings'] = json.dumps(context['settings'])
     return render_to_response('settingsjs/settings.js', context, mimetype=mimetype)
